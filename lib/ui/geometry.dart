@@ -92,7 +92,7 @@ abstract class OffsetBase {
   int get hashCode => hashValues(_dx, _dy);
 
   @override
-  String toString() => '$runtimeType(${_dx?.toStringAsFixed(1)}, ${_dy?.toStringAsFixed(1)})';
+  String toString() => 'OffsetBase(${_dx?.toStringAsFixed(1)}, ${_dy?.toStringAsFixed(1)})';
 }
 
 /// An immutable 2D floating-point offset.
@@ -637,11 +637,20 @@ class Rect {
   /// Construct a rectangle that bounds the given circle.
   ///
   /// The `center` argument is assumed to be an offset from the origin.
-  Rect.fromCircle({ Offset center, double radius }) : this.fromLTRB(
-    center.dx - radius,
-    center.dy - radius,
-    center.dx + radius,
-    center.dy + radius,
+  Rect.fromCircle({ Offset center, double radius }) : this.fromCenter(
+    center: center,
+    width: radius * 2,
+    height: radius * 2,
+  );
+
+  /// Constructs a rectangle from its center point, width, and height.
+  ///
+  /// The `center` argument is assumed to be an offset from the origin.
+  Rect.fromCenter({ Offset center, double width, double height }) : this.fromLTRB(
+    center.dx - width / 2,
+    center.dy - height / 2,
+    center.dx + width / 2,
+    center.dy + height / 2,
   );
 
   /// Construct the smallest rectangle that encloses the given offsets, treating

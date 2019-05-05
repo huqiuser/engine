@@ -42,6 +42,7 @@ bool _offsetIsValid(Offset offset) {
 bool _matrix4IsValid(Float64List matrix4) {
   assert(matrix4 != null, 'Matrix4 argument was null.');
   assert(matrix4.length == 16, 'Matrix4 must have 16 entries.');
+  assert(matrix4.every((double value) => value.isFinite), 'Matrix4 entries must be finite.');
   return true;
 }
 
@@ -1653,7 +1654,7 @@ class Codec extends NativeFieldWrapperClass2 {
 /// The returned future can complete with an error if the image decoding has
 /// failed.
 Future<Codec> instantiateImageCodec(Uint8List list, {
-  double decodedCacheRatioCap = double.infinity,
+  double decodedCacheRatioCap = 0,
 }) {
   return _futurize(
     (_Callback<Codec> callback) => _instantiateImageCodec(list, callback, null, decodedCacheRatioCap),
@@ -1703,7 +1704,7 @@ void decodeImageFromPixels(
   int height,
   PixelFormat format,
   ImageDecoderCallback callback,
-  {int rowBytes, double decodedCacheRatioCap = double.infinity}
+  {int rowBytes, double decodedCacheRatioCap = 0}
 ) {
   final _ImageInfo imageInfo = new _ImageInfo(width, height, format.index, rowBytes);
   final Future<Codec> codecFuture = _futurize(
